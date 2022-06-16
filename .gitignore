@@ -1,0 +1,13 @@
+/user_interface/node_modules/*
+TODO.md
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.toc
+*.nav
+*.snm
+*.cpython-37.pyc
+/release_builds/*

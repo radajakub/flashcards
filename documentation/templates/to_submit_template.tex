@@ -1,0 +1,25 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper, total={18cm, 25cm}]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[czech]{babel}
+\usepackage[parfill]{parskip}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\setkeys{Gin}{width=0.8\textwidth}
+\graphicspath{ {../../../../docs/} }
+\providecommand{\tightlist}{\setlength{\itemsep}{1pt}\setlength{\parskip}{1pt}}
+
+\definecolor{codehighlight}{RGB}{203,75,22}
+\let\oldtexttt\texttt
+\renewcommand{\texttt}[1]{\oldtexttt{\textcolor{codehighlight}{#1}}}
+
+\begin{document}
+\input{title.tex}
+\clearpage
+\tableofcontents
+\clearpage
+$body$
+\clearpage
+\input{sources.tex}
+\end{document}

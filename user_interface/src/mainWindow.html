@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Flashcards</title>
+        <meta charset="utf-8"/>
+        <!-- making the app responsive -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!--
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"/>
+            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+        -->
+        <!-- loading bootstrap and jquery -->
+        <script>if (typeof module === "object") {window.module = module; module = undefined;}</script>
+        <link rel="stylesheet" type="text/css" href="../lib/bootstrap.min.css"/>
+        <link rel="stylesheet" type="text/css" href="../lib/flipcard.css"/>
+        <script src="../lib/jquery.min.js"></script>
+        <script src="../lib/bootstrap.min.js"></script>
+        <script src="../lib/popper.min.js"></script>
+        <script src="./main.js"></script>
+        <script>if (window.module) module = window.module;</script>
+    </head>
+    <body style="background-color: #c4c4c4; color: #37474f; user-select: none;">
+        <!-- navigation bar on top of the page -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#" id="home_button">
+                    <img src="../assets/icons/linux-icon.png" width="30" height="30" class="d-inline-block align-top" alt="">
+                    Flashcards
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">Cards</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="#" id="create_card_button">Create card</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" id="edit_card_button">Edit card</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">Tags</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="#" id="create_tag_button">Create tag</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" id="edit_tag_button">Edit tag</a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" role="button" id="test_button">Test</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" id="navbarHelp" role="button" data-toggle="modal" data-target="#help">Help</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">File</a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="#" id="import_button">Import</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" id="export_button">Export</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- title page -->
+        <div id="title_page"><!-- add titlepage text-->
+            <div class="container mt-5">
+                <h1 class="display-1">Flashcards</h1>
+                <div class="mt-5">
+                    <img src="../assets/title_page/title_image1.jpg" class="img-fluid">
+                </div>
+            </div>
+        </div>
+        <!-- listing all cards -->
+        <div id="card_list">
+            <div class="container mt-5">
+                <div class="jumbotron shadow-lg rounded">
+                    <h1>List of all cards</h1>
+                    <table class="table table-hover table-sm mt-5" id="table_of_cards">
+                        <thead class="thead-dark">
+                            <th scope="col">#</th>
+                            <th scope="col">Front side</th>
+                            <th scope="col">Back side</th>
+                            <th scope="col">No. of tags</th>
+                            <th scope="col">Action</th>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- listing all tags -->
+        <div id="tag_list">
+            <div class="container mt-5">
+                <div class="jumbotron shadow-lg rounded">
+                    <h1>List of all tags</h1>
+                    <table class="table table-hover table-sm mt-5" id="table_of_tags">
+                        <thead class="thead-dark">
+                            <th scope="col">#</th>
+                            <th scope="col">Name of the tag</th>
+                            <th scope="col">No. of cards</th>
+                            <th scope="col">Learned</th>
+                            <th scope="col">Action</th>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- create card -->
+        <div id="create_card">
+            <div class="container mt-5">
+                <div class="jumbotron shadow-lg rounded">
+                    <h1>Create a card</h1>
+                    <form class="mt-5">
+                        <div class="needs-validation" novalidate>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="front_side"><h5>Front side</h5></label>
+                                        <input type="text" class="form-control" id="front_side_create" maxlength="200" required>
+                                        <small class="form-text text-muted" id="front_side_help">Enter text shown on the front side of the card (max 200 characters)</small>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="back_side"><h5>Back side</h5></label>
+                                        <input type="text" class="form-control" id="back_side_create" maxlength="200" required>
+                                        <small class="form-text text-muted" id="front_side_help">Enter text shown on the back side of the card (max 200 characters)</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <label><h5>Select tags</h5></label>
+                            <div class="row mt-3" id="create_card_tags">
+                            </div>
+                        </div>
+                        <div class="row mt-5">
+                            <button class="btn btn-info" type="button" id="save_new_card">Save</button>
+                            <button class="btn btn-danger ml-3" id="cancel">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- create tag -->
+        <div id="create_tag">
+            <div class="container mt-5">
+                <div class="jumbotron shadow-lg rounded">
+                    <h1>Create a tag</h1>
+                    <form class="mt-5">
+                        <div class="needs-validation" novalidate>
+                            <div class="form-group">
+                                <label for="tag_name_create"><h5>Tag name</h5></label>
+                                <input type="text" class="form-control" id="tag_name_create" maxlength="100" required>
+                                <small class="form-text text-muted" id="tag_name_help">Enter a name of a tag (max 100 characters)</small>
+                                <small class="form-text text-muted" id="tag_name_help">Two tags cannot have the same name</small>
+                            </div>
+                        </div>
+                        <div class="row mt-5">
+                            <button class="btn btn-info" type="button" id="save_new_tag">Save</button>
+                            <button class="btn btn-danger ml-3" id="cancel">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- edit card -->
+        <div id="edit_card">
+            <div class="container mt-5">
+                <div class="jumbotron shadow-lg rounded">
+                    <h1>Edit a card</h1>
+                    <form class="mt-5">
+                        <div class="needs-validation" novalidate>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="front_side_edit"><h5>Front side</h5></label>
+                                        <input type="text" class="form-control" id="front_side_edit" placeholder="Front side" maxlength="200" required>
+                                        <small class="form-text text-muted" id="front_side_help">Enter text shown on the front side of the card (max 200 characters)</small>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="back_side_edit"><h5>Back side</h5></label>
+                                        <input type="text" class="form-control" id="back_side_edit" placeholder="Back side" maxlength="200" required>
+                                        <small class="form-text text-muted" id="front_side_help">Enter text shown on the back side of the card (max 200 characters)</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <label><h5>Select tags</h5></label>
+                            <div class="row mt-3" id="edit_card_tags">
+                            </div>
+                        </div>
+                        <div class="row mt-5">
+                            <button class="btn btn-info" type="button" id="save_card_changes">Save</button>
+                            <button class="btn btn-danger ml-3" id="cancel_card">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- edit tag -->
+        <div id="edit_tag">
+            <div class="container mt-5">
+                <div class="jumbotron shadow-lg rounded">
+                    <h1>Edit a tag</h1>
+                    <form class="mt-5">
+                        <div class="needs-validation" novalidate>
+                            <div class="form-group">
+                                <label for="tag_name_edit"><h5>Front side</h5></label>
+                                <input type="text" class="form-control" id="tag_name_edit" placeholder="Tag name" maxlength="100" required>
+                                <small class="form-text text-muted" id="tag_name_help">Enter a name of a tag (max 100 characters)</small>
+                                <small class="form-text text-muted" id="tag_name_help">Two tags cannot have the same name</small>
+                            </div>
+                        </div>
+                        <div class="row mt-5">
+                            <button class="btn btn-info" type="button" id="save_tag_changes">Save</button>
+                            <button class="btn btn-danger ml-3" id="cancel_tag">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- choose tags for test -->
+        <div id="test_main">
+            <div class="container">
+                <div class="jumbotron mt-5 shadow-lg rounded" id="choose_tag">
+                    <h1 class="display-4">Choose tag to test</h1>
+                    <hr class="my-4">
+                    <div id="test_tags_buttons">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- choose type of a test and reversed cards -->
+        <div id="test_type">
+            <div class="container">
+                <div class="jumbotron mt-5 shadow-lg rounded" id="choose_type">
+                    <div class="row">
+                        <h1 class="display-4 ml-3" id="tag_test"></h1>
+                        <button type="button" class="btn btn-info btn-lg ml-auto" id="test_type_back">Back to tag selection</button>
+                    </div>
+                    <p class="lead">Choose type of test:</p>
+                    <hr class="my-4">
+                    <div class="row" id="test_type_buttons">
+                        <div class="col">
+                            <button type="button" class="btn btn-info btn-lg" style="width: 100%;" id="browse_button"><h5>Browse</h5></button>
+                        </div>
+                        <div class="col">
+                            <button type="button" class="btn btn-info btn-lg" style="width: 100%;" id="choices_button"><h5>Choices</h5></button>
+                        </div>
+                        <div class="col">
+                            <button type="button" class="btn btn-info btn-lg" style="width: 100%;"id="write_button"><h5>Write</h5></button>
+                        </div>
+                    </div>
+                    <div class="row mt-5 justify-content-md-center">
+                        <div class="custom-control custom-switch" id="reversed">
+                            <input type="checkbox" class="custom-control-input w-100" data-size="lg" id="switch_reversed">
+                            <label class="custom-control-label" for="switch_reversed">Reverse</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- test (browsing) -->
+        <div id="test_browse">
+            <div class="container">
+                <div class="container mt-5">
+                    <div class="progress" style="height: 20px;">
+                        <div id="positive_progress" class="progress-bar bg-dark" role="progressbar" style="width: 0%;"></div>
+                    </div>
+                </div>
+                <div class="jumbotron mt-3 shadow-lg rounded">
+                    <div class="row">
+                        <h1 class="display-4 ml-3">Flip a card</h1>
+                        <button type="button" class="btn btn-info btn-lg ml-auto" id="browse_back">Back to test selection</button>
+                    </div>
+                    <hr class="my-4">
+                    <p class="lead">Click on the card to flip it.</p>
+                    <div class="card">
+                        <div class="card-body" style="height: 300px;">
+                            <div class="flip-card" id="is_flipped">
+                                <div class="flip-card-inner">
+                                    <div class="flip-card-front">
+                                        <h1 class="display-4" id="front_text"></h1>
+                                    </div>
+                                    <div class="flip-card-back">
+                                        <h1 class="display-4" id="back_text"></h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="d-flex">
+                            <div class="p-2 mr-auto">
+                                <button type="button" class="btn btn-info" id="browse_previous">Previous</button>
+                            </div>
+                            <div class="p-2 ml-auto">
+                                <button type="button" class="btn btn-info" id="browse_next">Next</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- test (choices) -->
+        <div id="test_choices">
+            <div class="container">
+                <div class="jumbotron mt-5 shadow-lg rounded">
+                    <h1 class="display-4" id="choices_headline">Hello</h1>
+                    <hr class="my-4">
+                    <div class="row">
+                        <div class="col-8">
+                            <p class="lead">Choose one from these options:</p>
+                            <div class="list-group" id="choices_list">
+                                <li class="list-group-item" hidden></li>
+                                <li class="list-group-item list-group-item-secondary list-group-item-action" id="option_1"></li>
+                                <li class="list-group-item list-group-item-secondary list-group-item-action" id="option_2"></li>
+                                <li class="list-group-item list-group-item-secondary list-group-item-action" id="option_3"></li>
+                                <li class="list-group-item list-group-item-secondary list-group-item-action" id="option_4"></li>
+                                <li class="list-group-item" hidden></li>
+                            </div>
+                            <button role="button" class="btn btn-info mt-5" id="choices_check_answer">Check answer</button>
+                        </div>
+                        <div class="col-4">
+                            <p class="mt-2">Correct</p>
+                            <div class="progress mt-2" style="height: 20px;">
+                                <div id="choices_correct" class="progress-bar bg-success" role="progressbar" style="width: 0%;"></div>
+                            </div>
+                            <p class="mt-2">Wrong</p>
+                            <div class="progress mt-2" style="height: 20px;">
+                                <div id="choices_wrong" class="progress-bar bg-danger" role="progressbar" style="width: 0%;"></div>
+                            </div>
+                            <p class="mt-2">Remaining</p>
+                            <div class="progress mt-2" style="height: 20px;">
+                                <div id="choices_count" class="progress-bar bg-dark" role="progressbar" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- test (write) -->
+        <div id="test_write">
+            <div class="container">
+                <div class="jumbotron mt-5 shadow-lg rounded">
+                    <h1 class="display-4" id="write_headline">Hello</h1>
+                    <hr class="my-4">
+                    <div class="row">
+                        <div class="col-8">
+                            <form>
+                                <div class="form-group">
+                                    <label for="write_answer">Write the correct answer:</label>
+                                    <input type="text" class="form-control" id="write_answer">
+                                </div>
+                                <button role="button" class="btn btn-info" id="check_write_answer">Check answer</button>
+                            </form>
+                        </div>
+                        <div class="col-4">
+                            <p class="mt-2">Correct</p>
+                            <div class="progress mt-2" style="height: 20px;">
+                                <div id="write_correct" class="progress-bar bg-success" role="progressbar" style="width: 0%;"></div>
+                            </div>
+                            <p class="mt-2">Wrong</p>
+                            <div class="progress mt-2" style="height: 20px;">
+                                <div id="write_wrong" class="progress-bar bg-danger" role="progressbar" style="width: 0%;"></div>
+                            </div>
+                            <p class="mt-2">Remaining</p>
+                            <div class="progress mt-2" style="height: 20px;">
+                                <div id="write_count" class="progress-bar bg-dark" role="progressbar" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- import -->
+        <div id="import">
+            <div class="container mt-5">
+                <div class="jumbotron shadow-lg rounded">
+                    <h1>Import cards from file</h1>
+                    <div class="mt-5">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">File name</span>
+                            </div>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="import_input">
+                                <label class="custom-file-label" for="import_input">Browse</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-5">
+                        <button type="button" class="btn btn-info" id="confirm_import">Confirm import</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- wrong import-->
+        <div id="wrong_import">
+            <div class="modal fade" id="wrong_import_modal" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Wrong import file!</h5>
+                            <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                        </div>
+                        <div class="modal-body" id="wrong_import_modal_content">File has to be <kbd>.csv</kbd> format</div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-info" data-dismiss="modal">Ok</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- export -->
+        <div id="export">
+            <div class="container mt-5">
+                <div class="jumbotron shadow-lg rounded">
+                    <h1>Export cards into file</h1>
+                    <div class="mt-5">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">File name</span>
+                            </div>
+                            <input type="text" class="form-control" id="export_input">
+                        </div>
+                    </div>
+                    <div class="mt-5">
+                        <button type="button" class="btn btn-info" id="confirm_export">Confirm export</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- wrong export modal -->
+        <div id="wrong_export">
+            <div class="modal fade" id="wrong_export_modal" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Wrong file name format</h5>
+                            <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                        </div>
+                        <div class="modal-body" id="wrong_export_modal_content"></div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-info" data-dismiss="modal">Ok</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- import modal -->
+        <div id="response_modal">
+            <div class="modal fade" id="response" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="response_title"></h5>
+                            <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                        </div>
+                        <div class="modal-body"><span id="response_text"></span><span class="badge-pill badge-dark" id="path"></span></div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-info" data-dismiss="modal">Ok</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- help -->
+        <div id="help_modal"><!-- add help text -->
+            <div class="modal fade bd-example-modal-lg" id="help" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="modal-title" id="help">Help</h2>
+                            <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                        </div>
+                        <div class="modal-body">
+                            <h4><span class="badge badge-dark">Card</span> = pair of texts, only one is known at the time</h4>
+                            <h4><span class="badge badge-dark">Tag</span> = group of cards, unit for testing</h4>
+                            <hr>
+                            <h3><span class="badge badge-dark">Create card</span></h3>
+                            <ul>
+                                <li>Adds new card into your collection</li>
+                                <li><strong>Front side</strong> text field fill with text to be shown on the front side of the flashcard</li>
+                                <li><strong>Back side</strong> text field fill with text to be shown on the back side of the flashcard</li>
+                                <li>Select any of the displayed <strong>tags</strong> to add this card to</li>
+                                <li>Click <strong>Save</strong> to save the card</li>
+                                <li>Click <strong>Cancel</strong> to discard changes</li>
+                            </ul>
+                            <h3><span class="badge badge-dark">Create tag</span></h3>
+                            <ul>
+                                <li>Adds new tag into your collection</li>
+                                <li><strong>Tag name</strong> text field fill with text to be treated as a name of the tag</li>
+                                <li>Click <strong>Save</strong> to save the tag</li>
+                                <li>Click <strong>Cancel</strong> to discard changes</li>
+                            </ul>
+                            <h3><span class="badge badge-dark">Edit card</span></h3>
+                            <ul>
+                                <li>Shows list of all cards in your collection with details about each card</li>
+                                <ul>
+                                    <li><strong>Front</strong> and <strong>Back</strong> side and <strong>Number of tags</strong> which contain the card</li>
+                                    <li><strong>Edit</strong> button - open form for editing selected card</li>
+                                    <li><strong>Delete</strong> button - remove card from collection</li>
+                                </ul>
+                                <li>Editing is same as creating - fields and checkboxes are filled with current information about selected card</li>
+                                <li><strong>Save</strong> to save changes</li>
+                                <li><strong>Cancel</strong> to discard changes</li>
+                            </ul>
+                            <h3><span class="badge badge-dark">Edit tag</span></h3>
+                            <ul>
+                                <li>Shows list of all tags in collection with details about each tag</li>
+                                <ul>
+                                    <li><strong>Tag name</strong>, <strong>Number of cards</strong> which are in the tag and <strong>Success rate</strong> of the last test</li>
+                                    <li><strong>Edit</strong> button - open form for editing selected tag</li>
+                                    <li><strong>Delete</strong> button - remove tag from collection</li>
+                                </ul>
+                                <li>Only <strong>Tag name</strong> can be changed - field filled with current name</li>
+                                <li><strong>Save</strong> to save changes</li>
+                                <li><strong>Cancel</strong> to discard changes</li>
+                            </ul>
+                            <h3><span class="badge badge-dark">Tests</span></h3>
+                            <ul>
+                                <li>Choose <strong>tag</strong> to test from listed options</li>
+                                <li>Choose type of test (<strong>browse, choices, write</strong>) and select if card will be tested normally or with Front and Back <strong>swapped</strong> (<strong>Reversed</strong> switch)</li>
+                                <li>Click <strong>Back to tag selection</strong> to return to selection of tag to test</li>
+                            </ul>
+                            <h3><span class="badge badge-dark">Browse</span></h3>
+                            <ul>
+                                <li>No questions in this type of test</li>
+                                <li>Browsing cards by clicking <strong>Previous</strong> or <strong>Next</strong> buttons</li>
+                                <li>Clicking on card <strong>flips</strong> it to show the hidden side</li>
+                                <li>On top of the page is status bar on which is shown which card from how many is shown</li>
+                                <li>Click <strong>Back to test selection</strong> to return back to selecting type of test</li>
+                            </ul>
+                            <h3><span class="badge badge-dark">Choices</span></h3>
+                            <ul>
+                                <li>On the top of the page is shown <strong>Front</strong> side of the card</li>
+                                <li>Below are listed <strong>4 choices</strong> from which <strong>Only one</strong> is correct</li>
+                                <li>Select correct one by clicking on them</li>
+                                <li>Click on <strong>Check answer</strong> to confirm answer - page with result - shows whether the answer was correct or not, when not it provides correct one, too</li>
+                                <li>Click on <strong>Next question</strong> to move to next question</li>
+                                <li>On the right side are three status bars</li>
+                                <ul>
+                                    <li>Number of correct answers, wrong answers and answers to be answered</li>
+                                </ul>
+                                <li>After the last question a summary is shown</li>
+                                <ul>
+                                    <li>Percentage of correct answers is shown and comparison with previous test</li>
+                                    <li>Click on <strong>Show answers</strong> to display a table with all answers and correct answers</li>
+                                    <li>Click on <strong>Continue to test selection</strong> to finish test and return to selecting another test</li>
+                                </ul>
+                            </ul>
+                            <h3><span class="badge badge-dark">Write</span></h3>
+                            <ul>
+                                <li>On the top of the page is shown <strong>Front</strong> side of the card</li>
+                                <li>Below is a field where to put answer</li>
+                                <li>Click on <strong>Check answer</strong> to confirm answer - page with result - shows whether the answer was correct or not, when not it provides correct one and highlights mistakes in given answer</li>
+                                <li>Click on <strong>Next question</strong> to move to next question</li>
+                                <li>On the right side are three status bars</li>
+                                <ul>
+                                    <li>Number of correct answers, wrong answers and answers to be answered</li>
+                                </ul>
+                                <li>After the last question a summary is shown</li>
+                                <ul>
+                                    <li>Percentage of correct answers is shown and comparison with previous test</li>
+                                    <li>Click on <strong>Show answers</strong> to display a table with all answers and correct answers</li>
+                                    <li>Click on <strong>Continue to test selection</strong> to finish test and return to selecting another test</li>
+                                </ul>
+                            </ul>
+                            <h3><span class="badge badge-dark">Import</span></h3>
+                            <ul>
+                                <li>Only one button - show file system</li>
+                                <li>Select <strong>file</strong> to import (it has to be <strong>.csv</strong> format)</li>
+                                <li>If the file is written correctly, data will be added to collection</li>
+                                <li>(If imported card already exists in collection, it will be skipped)</li>
+                            </ul>
+                            <h3><span class="badge badge-dark">Export</span></h3>
+                            <ul>
+                                <li>One text field - write name of file in which data will be exported (<strong>letters and numbers only</strong>)</li>
+                                <li>File will be saved to <strong>export</strong> folder in the main folder of this app</li>
+                            </ul>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- delete confirmation -->
+        <div id="delete_confirmation">
+            <div class="modal fade" id="delete_conf" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="delete_conf">Confirm deletion</h5>
+                            <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure you want to delete this item?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-info" id="yes">Yes</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- message shown when entered already existing tag name -->
+        <div id="wrong_tag_modal">
+            <div class="modal fade" id="wrong_tag" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Tag already exists</h5>
+                            <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Two different tags cannot have the same names. You have to change it.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-info" data-dismiss="modal">Ok</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- alert that card already exists -->
+        <div id="wrong_card_modal">
+            <div class="modal fade" id="wrong_card" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Card already exists</h5>
+                            <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Two different cards cannot have similar both front and back. Only fronts or only backs can be equal.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-info" data-dismiss="modal">Ok</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- message shown after successful creation -->
+        <div id="created_modal">
+            <div class="modal fade" id="created" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Success</h5>
+                            <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>It has been successfully saved.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-info" data-dismiss="modal">Ok</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- correct answer -->
+        <div id="correct_answer">
+            <div class="container mt-5">
+                <div class="alert alert-success shadow-lg rounded" role="alert">
+                    <h4 class="alert-heading">Well done!</h4>
+                    <p>Your answer is correct!</p>
+                    <hr class="my-4">
+                    <h5 class="alert-heading" id="correct_headline"></h5>
+                    <p class="lead mt-3">Your answer:</p>
+                    <div class="card text-success">
+                        <div class="card-body" id="correct_wrong_answer"></div>
+                    </div>
+                    <p class="lead mt-3">Correct answer:</p>
+                    <div class="card text-success">
+                        <div class="card-body" id="correct_correct_answer"></div>
+                    </div>
+                    <hr class="my-4">
+                    <button type="button" class="btn btn-info dismiss">Next question</button>
+                </div>
+            </div>
+        </div>
+        <!-- incorrect answer-->
+        <div id="wrong_answer">
+            <div class="container mt-5">
+                <div class="alert alert-danger shadow-lg rounded" role="alert">
+                    <h2 class="alert-heading">Better luck next time!</h2>
+                    <p class="lead">Your answer is incorrect!</p>
+                    <hr class="my-4">
+                    <h4 class="alert-heading" id="wrong_headline"></h4>
+                    <p class="lead mt-3">Your answer:</p>
+                    <div class="card text-danger">
+                        <div class="card-body" id="wrong_wrong_answer"></div>
+                    </div>
+                    <p class="lead mt-3">Correct answer:</p>
+                    <div class="card text-success">
+                        <div class="card-body" id="wrong_correct_answer"></div>
+                    </div>
+                    <hr class="my-4">
+                    <button type="button" class="btn btn-info dismiss">Next question</button>
+                </div>
+            </div>
+        </div>
+        <!-- summary of answers after completing a test -->
+        <div id="tag_summary">
+            <div class="container">
+                <div class="jumbotron mt-5 shadow-lg rounded">
+                    <div class="row">
+                        <h1 class="display-4 ml-3" id="tag_summary_headline"></h1>
+                        <button type="button" class="btn btn-info btn-lg ml-auto" id="summary_back">Continue to test selection</button>
+                    </div>
+                    <p class="lead mt-3">Here is a summary of your answers: </p>
+                    <hr class="my-4">
+                    <h1>You got <span id="correct_summary"></span> out of <span id="total_summary"></span> correctly.</h1>
+                    <div class="row ml-1 mt-5">
+                            <h1>Overall progress: <span id="success_rate"></span></h1><h1><span class="badge badge-pill badge-success ml-3" id="improvement"></span></h1>
+                            <h1><span class="badge badge-pill badge-danger ml-3" id="impairment"></span></h1>
+                    </div>
+                    <button class="btn btn-info mt-5" id="answers_button" type="button" data-toggle="collapse" data-target="#answers">Show answers</button>
+                    <div class="collapse mt-3" id="answers">
+                        <table class="table table-borderless" id="answers_table">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Word</th>
+                                    <th>Your answer</th>
+                                    <th>Correct answer</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- loading -->
+        <div id="loading">
+            <div class="text-center">
+                <div class="spinner-border" style="width: 5em; height: 5em;" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

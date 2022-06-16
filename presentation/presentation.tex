@@ -1,0 +1,150 @@
+\documentclass[11pt, xcolor=table]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[czech]{babel}
+\usepackage{graphicx}
+\usepackage{pifont}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\beamertemplatenavigationsymbolsempty
+
+\graphicspath{ {resources/} }
+
+\usetheme{Madrid}
+\usecolortheme{seagull}
+
+\title{Flashcards}
+\subtitle{Maturitní práce}
+\author{Jakub Rada O8.B}
+\institute{Gymnázium Nad Alejí}
+\date{16. května 2019}
+
+\begin{document}
+%title page
+    \frame{\titlepage}
+%about project
+    \begin{frame}
+        \frametitle{O aplikaci}
+        Flashcards je aplikace na učení a testování slovíček či jiné látky
+        \begin{itemize}
+            \item Vytváření kartiček, které se dají zařadit do okruhů ke zkoušení
+            \item Tři typy testů z okruhů
+            \begin{itemize}
+                \item Procházení a otáčení kartiček
+                \item Vybírání správné možnosti
+                \item Psaní správné odpovědi
+            \end{itemize}
+            \item Rychlejší vytváření kartiček a sdílení mezi zařízeními
+            \begin{itemize}
+                \item Import do .csv souboru
+                \item Export z .csv souboru do aplikace
+            \end{itemize}
+        \end{itemize}
+    \end{frame}
+%motivation frame
+    \begin{frame}
+        \frametitle{Motivace}
+        \begin{itemize}
+            \item Několik podobných aplikací existuje (např. Quizlet) \ding{219} všechny online
+            \item Tato vytvořená aplikace nevyžaduje připojení k internetu
+            \item Sdílení dat lze uskutečnit skrze .csv soubory
+        \end{itemize}
+        \vfill
+        \begin{center}
+            \url{https://quizlet.com/}
+        \end{center}
+    \end{frame}
+%show slide
+    \begin{frame}
+        \frametitle{Ukázka}
+    \end{frame}
+%levenshtein distance
+    \begin{frame}
+        \frametitle{Jak najít chyby v psané odpovědi?}
+        Levenshteinova vzdálenost
+        \begin{itemize}
+            \item porovnáváme 2 textové řetězce
+            \item tři možné operace - přidání znaku, vynechání znaku, záměna znaku
+        \end{itemize}
+        \begin{table}
+            \centering
+            \label{tab:1}
+            \begin{tabular}{ | c | c | c | c | c | c | c | }
+                \hline
+                &   & j & e & d & n & a \\
+                \hline
+                & \cellcolor{lightgray}0 & 1 & 2 & 3 & 4 & 5 \\
+                \hline
+                j & 1 & \cellcolor{lightgray}0 & 1 & 2 & 3 & 4 \\
+                \hline
+                e & 2 & 1 & \cellcolor{lightgray}0 & 1 & 2 & 3 \\
+                \hline
+                m & 3 & 2 & 1 & \cellcolor{lightgray}1 & 2 & 3 \\
+                \hline
+                n & 4 & 3 & 2 & 2 & \cellcolor{lightgray}1 & 2 \\
+                \hline
+                a & 5 & 4 & 3 & 3 & 2 & \cellcolor{lightgray}1 \\
+                \hline
+            \end{tabular}
+        \end{table}
+    \end{frame}
+%card collision frame
+    \begin{frame}
+        \frametitle{Kartičky, které mají stejnou jednu stranu}
+        Kartičky se stejnou přední stranou
+        \begin{itemize}
+            \item Kartičky se po dobu testu spojí do jedné
+            \begin{itemize}
+                \item Ve vybírání odpovědí vznikne jedna možnost
+                \item V psaní odpovědi stačí odpovědět jakoukoli částí
+            \end{itemize}
+            \bigskip
+            $$\frac{orange}{oranzova}\, a\,\frac{orange}{pomeranc}\,\rightarrow\,\frac{orange}{oranzova, pomeranc}$$
+        \end{itemize}
+    \end{frame}
+%import slide
+    \begin{frame}[fragile]
+        \frametitle{Import a export}
+        \begin{itemize}
+            \item Formát zápisu dat do .csv souboru
+            \begin{lstlisting}
+card, lic, rub, cislo_okruhu|cislo_okruhu
+tag, cislo_okruhu, nazev_okruhu
+            \end{lstlisting}
+            \vfill
+            \item Ukázkový soubor
+            \begin{lstlisting}
+tag, 1, cisla
+tag, 2, anglictina
+card, jedna, one, 1|2
+card, dva, two, 1|2
+card, tri, tres, 1
+            \end{lstlisting}
+        \end{itemize}
+    \end{frame}
+%sources
+    \begin{frame}
+        \frametitle{Použité knihovny}
+        Knihovny
+        \begin{itemize}
+            \item server - Python 3, Django
+            \item klient - Electron, Bootstrap, JQuery
+            \item NPM
+        \end{itemize}
+        Dokumentace
+        \begin{itemize}
+            \item Electron docs
+            \item Django docs
+            \item Bootstrap docs
+        \end{itemize}
+    \end{frame}
+%end page
+    \begin{frame}
+        \frametitle{Konec}
+        \begin{block}{}
+            \centering
+            {\Huge Děkuji za pozornost}
+        \end{block}
+    \end{frame}
+\end{document}
