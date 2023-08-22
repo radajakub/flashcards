@@ -1,28 +1,31 @@
 # Flashcards
 
-Maturitní aplikace na učení slovíček nebo jiné látky.
-Uživatel si vytváří kartičky se slovíčky, které zařazuje do libovolných okruhů.
-Z těchto okruhů je poté zkoušen třemi typy testů.
+A graduation app for learning vocabulary or other material.
+The user creates flashcards with vocabulary words, which he/she classifies into arbitrary headings.
+The user is then tested on these headings with three types of tests.
 
-## Instalace a spouštění
+## Installation and launching
 
-Pro správné fungování je potřeba mít nainstalován `Python 3.6` nebo vyšší a `Django 2.1.5` (instalace pomocí `pip install django=2.1.5`).
+For proper functioning, you need to have `Python 3.6` or higher and `Django 2.1.5` installed (install using `pip install django=2.1.5`).
 
-Pro instalaci vývojářské verze je potřeba mít nainstalován `npm`.
+To install the developer version, you need to have `npm` installed.
 
-Instalace aplikace
+Installing the application
 
-1. Naklonování Github repozitáře
+1. Clone the Github repository
     - `git clone https://github.com/JakubRada/Flashcards.git`
-2. Přesunutí se do příslušné složky
+2. Moving to the appropriate folder
     - `cd Flashcards/user_interface/`
-3. Instalace pomocí `npm`
+3. Installing using `npm`
     - `npm install`
 
-Nejprve je potřeba spustit server. Ve složce server (je v ní soubor `manage.py`) spustíme příkaz `python manage.py runserver localhost:8000`.
+First you need to start the server. In the server folder (it contains the `manage.py` file), run `python manage.py runserver localhost:8000`.
 
-Poté se spustí samotná aplikace. Buď spuštěním `flashcards.exe` souboru na Windows, nebo `flashcards` souboru na Linux.
+After that, the application itself will start. Either by running the `flashcards.exe` file on Windows, or the `flashcards` file on Linux.
 
-Ve vývoji lze spouštět aplikaci pomocí příkazu `npm start` ve složce user_interface (je potřeba mít nainstalovaný `npm`).
+In development, the application can be started using the `npm start` command in the user_interface folder (you need to have `npm` installed).
 
-Více informací najdete na [*webové stránce projektu*](https://jakubrada.github.io/Flashcards/index.html), kde se nachází uživatelská příručka i vývojářská dokumentace.
+More information can be found at [*project website*](https://jakubrada.github.io/Flashcards/index.html), where the user guide and developer documentation are located.
+
+
+Translated with www.DeepL.com/Translator (free version)
