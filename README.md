@@ -26,6 +26,3 @@ After that, the application itself will start. Either by running the `flashcards
 In development, the application can be started using the `npm start` command in the user_interface folder (you need to have `npm` installed).
 
 More information can be found at [*project website*](https://jakubrada.github.io/Flashcards/index.html), where the user guide and developer documentation are located.
-
-
-Translated with www.DeepL.com/Translator (free version)
